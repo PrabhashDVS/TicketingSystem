@@ -83,7 +83,7 @@ namespace TicketingSystem.Repository
         }
 
         public BaseResponse GetUserById(string id)
-        {
+        {  
             try
             {
                 User user = new User();

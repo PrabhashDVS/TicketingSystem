@@ -33,6 +33,7 @@ namespace TicketingSystem.API.Controllers
             }
         }
 
+        //[Authorize]
         [HttpGet("ActiveDeactiveUser/{id}")]
         public IActionResult ActiveDeactiveUser(string id)
         {
@@ -87,6 +88,7 @@ namespace TicketingSystem.API.Controllers
             }
         }
 
+        //[Authorize]
         [HttpPut("UpdateUser/{id}")]
         public IActionResult UpdateUser(string id, [FromBody] UserVM updatedUser)
         {
@@ -109,7 +111,7 @@ namespace TicketingSystem.API.Controllers
 
         }
 
-
+        //[Authorize]
         [HttpDelete("DeleteUser/{id}")]
         public IActionResult DeleteUser(string id)
         {
@@ -122,8 +124,8 @@ namespace TicketingSystem.API.Controllers
                     return NotFound("User not found");
                 }
 
-                _userService.DeleteUser(id);
-                return Ok(User);
+                var res = _userService.DeleteUser(id);
+                return Ok(res);
             }
             catch (Exception ex)
             {

@@ -32,7 +32,7 @@ namespace TicketingSystem.Repository
                     string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainTextPassword);
                     user.Password = hashedPassword;
                     _userCollection.InsertOne(user);
-                    return new BaseResponseService().GetSuccessResponse();
+                    return new BaseResponseService().GetSuccessResponse("User Created Successfully");
                 }
 
                     return new BaseResponseService().GetValidatationResponse("User is Already Exists!"); 
@@ -134,7 +134,7 @@ namespace TicketingSystem.Repository
             {
                 var filter = Builders<User>.Filter.Eq(s => s.Id, id);
                 _userCollection.DeleteOne(filter);
-                return new BaseResponseService().GetSuccessResponse(filter);
+                return new BaseResponseService().GetSuccessResponse("User Deleted Successfully!");
 
             }
             catch (Exception ex)

@@ -11,7 +11,7 @@ namespace TicketingSystem.Repository
     {
         public BaseResponse GetSuccessResponse()
         {
-            return new BaseResponse() { Success = true, Message = "Success", };
+            return new BaseResponse() { Success = true, Message = "Success" };
         }
         public BaseResponse GetSuccessResponse(object data)
         {

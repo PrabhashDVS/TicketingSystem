@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketingSystem.Model;
+using TicketingSystem.Model.ViewModels;
 
 namespace TicketingSystem.Repository
 {
@@ -31,7 +32,7 @@ namespace TicketingSystem.Repository
                     string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainTextPassword);
                     user.Password = hashedPassword;
                     _userCollection.InsertOne(user);
-                    return new BaseResponseService().GetSuccessResponse(user);
+                    return new BaseResponseService().GetSuccessResponse();
                 }
 
                     return new BaseResponseService().GetValidatationResponse("User is Already Exists!"); 
@@ -53,8 +54,9 @@ namespace TicketingSystem.Repository
 
                 if (user != null)
                 {
-                    user.ActiveStatus = !user.ActiveStatus;
+                    user.ActiveStatus = (user.ActiveStatus == "Active") ? "Deactive" : "Active";
                     _userCollection.ReplaceOne(s => s.Id == id, user);
+
                     return new BaseResponseService().GetSuccessResponse(user);
                 }
 
@@ -101,10 +103,11 @@ namespace TicketingSystem.Repository
 
         }
 
-        public BaseResponse UpdateUser(string id, User updatedUser)
+        public BaseResponse UpdateUser(string id, UserVM updatedUser)
         {
             try
             {
+
                 var filter = Builders<User>.Filter.Eq(s => s.Id, id);
                 var update = Builders<User>.Update
                     .Set(s => s.FirstName, updatedUser.FirstName)

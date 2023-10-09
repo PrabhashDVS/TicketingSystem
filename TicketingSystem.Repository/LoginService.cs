@@ -25,7 +25,7 @@ namespace TicketingSystem.Repository
 
                 user = _userCollection.Find(s => s.NIC == nic).SingleOrDefault();
 
-                if (user.ActiveStatus == false)
+                if (user.ActiveStatus == "Deactive")
                 {
                     throw new Exception("User is not Active!");
                 }

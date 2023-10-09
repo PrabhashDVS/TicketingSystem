@@ -37,9 +37,9 @@ namespace TicketingSystem.Controllers
 
                 string token = _tokenService.GenerateToken(id, role);
 
-                var resObject = new { userData = userRes, tokenData = token };
+                //var resObject = new { userData = userRes, tokenData = token };
 
-                return Ok(resObject);
+                return Ok(token);
             }
             catch (Exception ex)
             {

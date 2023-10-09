@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using TicketingSystem.Model;
+using TicketingSystem.Model.ViewModels;
 using TicketingSystem.Repository;
 
 namespace TicketingSystem.API.Controllers
@@ -87,7 +88,7 @@ namespace TicketingSystem.API.Controllers
         }
 
         [HttpPut("UpdateUser/{id}")]
-        public IActionResult UpdateUser(string id, [FromBody] User updatedUser)
+        public IActionResult UpdateUser(string id, [FromBody] UserVM updatedUser)
         {
             try
             {

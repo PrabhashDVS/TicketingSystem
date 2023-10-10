@@ -38,9 +38,13 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                List<Train> TrainList = new List<Train>();
-                TrainList = _trainCollection.Find(s => true).ToList();
-                return new BaseResponseService().GetSuccessResponse(TrainList);
+                List<Train> trainList = new List<Train>();
+                trainList = _trainCollection.Find(s => true).ToList();
+                if (trainList != null)
+                {
+                    return new BaseResponseService().GetSuccessResponse(trainList);
+                }
+                return new BaseResponseService().GetValidatationResponse("Trains Not Found!");
             }
             catch (Exception ex)
             {
@@ -53,9 +57,14 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                Train Train = new Train();
-                Train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
-                return new BaseResponseService().GetSuccessResponse(Train);
+                Train train = new Train();
+                train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
+                if (train != null)
+                {
+                    return new BaseResponseService().GetSuccessResponse(train);
+                }
+                return new BaseResponseService().GetValidatationResponse("Train Not Found!");
+
             }
             catch (Exception ex)
             {
@@ -68,20 +77,27 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                var filter = Builders<Train>.Filter.Eq(s => s.Id, id);
-                var update = Builders<Train>.Update
-                    .Set(s => s.Number, updatedTrain.Number)
-                    .Set(s => s.Name, updatedTrain.Name)
-                    .Set(s => s.Departure, updatedTrain.Departure)
-                    .Set(s => s.DepartureDate, updatedTrain.DepartureDate)
-                   
-                    .Set(s => s.Arrival, updatedTrain.Arrival)
-                    .Set(s => s.ArrivalDate, updatedTrain.ArrivalDate)
-                    .Set(s => s.NoOfSeats, updatedTrain.NoOfSeats)
-                    .Set(s => s.Fare, updatedTrain.Fare);
+                Train train = new Train();
+                train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
+                if (train != null)
+                {
+                    var filter = Builders<Train>.Filter.Eq(s => s.Id, id);
+                    var update = Builders<Train>.Update
+                        .Set(s => s.Number, updatedTrain.Number)
+                        .Set(s => s.Name, updatedTrain.Name)
+                        .Set(s => s.Departure, updatedTrain.Departure)
+                        .Set(s => s.DepartureDate, updatedTrain.DepartureDate)
+                        .Set(s => s.Stations, updatedTrain.Stations)
+                        .Set(s => s.Arrival, updatedTrain.Arrival)
+                        .Set(s => s.ArrivalDate, updatedTrain.ArrivalDate)
+                        .Set(s => s.NoOfSeats, updatedTrain.NoOfSeats)
+                        .Set(s => s.Fare, updatedTrain.Fare);
 
-                _trainCollection.UpdateOne(filter, update);
-                return new BaseResponseService().GetSuccessResponse(updatedTrain);
+                    _trainCollection.UpdateOne(filter, update);
+                    return new BaseResponseService().GetSuccessResponse(updatedTrain);
+                }
+                return new BaseResponseService().GetValidatationResponse("Train Not Found!");
+                
             }
             catch (Exception ex)
             {
@@ -94,9 +110,16 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                var filter = Builders<Train>.Filter.Eq(s => s.Id, id);
-                _trainCollection.DeleteOne(filter);
-                return new BaseResponseService().GetSuccessResponse(filter);
+
+                Train train = new Train();
+                train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
+                if (train != null)
+                {
+                    var filter = Builders<Train>.Filter.Eq(s => s.Id, id);
+                    _trainCollection.DeleteOne(filter);
+                    return new BaseResponseService().GetSuccessResponse("The Train Deleted Successfully!");
+                }
+                return new BaseResponseService().GetValidatationResponse("Train Not Found!");                
 
             }
             catch (Exception ex)

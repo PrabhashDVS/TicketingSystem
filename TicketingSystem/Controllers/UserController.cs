@@ -71,16 +71,8 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
                 var res = _userService.GetUserById(id);
-
-                if (res == null)
-                {
-                    return NotFound("User not found");
-                }
-
                 return Ok(res);
-
             }
             catch (Exception ex)
             {
@@ -93,14 +85,7 @@ namespace TicketingSystem.API.Controllers
         public IActionResult UpdateUser(string id, [FromBody] UserVM updatedUser)
         {
             try
-            {
-                
-                var existingUser = _userService.GetUserById(id);
-                if (existingUser == null)
-                {
-                    return NotFound("User not found");
-                }
-
+            {                               
                 _userService.UpdateUser(id, updatedUser);
                 return Ok(updatedUser);
             }
@@ -117,13 +102,6 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
-                var User = _userService.GetUserById(id);
-                if (User == null)
-                {
-                    return NotFound("User not found");
-                }
-
                 var res = _userService.DeleteUser(id);
                 return Ok(res);
             }

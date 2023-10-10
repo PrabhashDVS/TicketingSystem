@@ -60,7 +60,7 @@ namespace TicketingSystem.Repository
                     return new BaseResponseService().GetSuccessResponse(user);
                 }
 
-                return new BaseResponseService().GetValidatationResponse("User Not Found!.");
+                return new BaseResponseService().GetValidatationResponse("User Not Found!");
             }
             catch (Exception ex)
             {
@@ -75,7 +75,11 @@ namespace TicketingSystem.Repository
             {
                 List<User> userList = new List<User>();
                 userList = _userCollection.Find(s => true).ToList();
-                return new BaseResponseService().GetSuccessResponse(userList);
+                if(userList != null)
+                {
+                    return new BaseResponseService().GetSuccessResponse(userList);
+                }
+                return new BaseResponseService().GetValidatationResponse("Users Not Found!");
             }
             catch (Exception ex)
             {
@@ -94,7 +98,7 @@ namespace TicketingSystem.Repository
                 {
                     return new BaseResponseService().GetSuccessResponse(user);
                 }
-                return new BaseResponseService().GetValidatationResponse("User Not Found!.");
+                return new BaseResponseService().GetValidatationResponse("User Not Found!");
             }
             catch (Exception ex)
             {
@@ -107,19 +111,24 @@ namespace TicketingSystem.Repository
         {
             try
             {
+                User user = new User();
+                user = _userCollection.Find(s => s.Id == id).SingleOrDefault();
+                if (user != null)
+                {
+                    var filter = Builders<User>.Filter.Eq(s => s.Id, id);
+                    var update = Builders<User>.Update
+                        .Set(s => s.FirstName, updatedUser.FirstName)
+                        .Set(s => s.LastName, updatedUser.LastName)
+                        .Set(s => s.Email, updatedUser.Email)
+                        .Set(s => s.ContactNo, updatedUser.ContactNo)
+                        .Set(s => s.DOB, updatedUser.DOB)
+                        .Set(s => s.Address, updatedUser.Address)
+                        .Set(s => s.Gender, updatedUser.Gender);
 
-                var filter = Builders<User>.Filter.Eq(s => s.Id, id);
-                var update = Builders<User>.Update
-                    .Set(s => s.FirstName, updatedUser.FirstName)
-                    .Set(s => s.LastName, updatedUser.LastName)
-                    .Set(s => s.Email, updatedUser.Email)
-                    .Set(s => s.ContactNo, updatedUser.ContactNo)
-                    .Set(s => s.DOB, updatedUser.DOB)
-                    .Set(s => s.Address, updatedUser.Address)
-                    .Set(s => s.Gender, updatedUser.Gender);
-
-                _userCollection.UpdateOne(filter, update);
-                return new BaseResponseService().GetSuccessResponse(updatedUser);
+                    _userCollection.UpdateOne(filter, update);
+                    return new BaseResponseService().GetSuccessResponse(updatedUser);
+                }
+                return new BaseResponseService().GetValidatationResponse("User Not Found!");
             }
             catch (Exception ex)
             {
@@ -132,9 +141,15 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                var filter = Builders<User>.Filter.Eq(s => s.Id, id);
-                _userCollection.DeleteOne(filter);
-                return new BaseResponseService().GetSuccessResponse("User Deleted Successfully!");
+                User user = new User();
+                user = _userCollection.Find(s => s.Id == id).SingleOrDefault();
+                if (user != null)
+                {
+                    var filter = Builders<User>.Filter.Eq(s => s.Id, id);
+                    _userCollection.DeleteOne(filter);
+                    return new BaseResponseService().GetSuccessResponse("User Deleted Successfully!");
+                }
+                return new BaseResponseService().GetValidatationResponse("User Not Found!");
 
             }
             catch (Exception ex)

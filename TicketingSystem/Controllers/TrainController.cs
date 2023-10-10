@@ -18,6 +18,7 @@ namespace TicketingSystem.API.Controllers
             _trainService = trainService;
         }
 
+        //[Authorize]
         [HttpPost("AddTrain")]
         public IActionResult AddTrain(Train Train)
         {
@@ -48,19 +49,13 @@ namespace TicketingSystem.API.Controllers
 
         }
 
+        //[Authorize]
         [HttpGet("GetTrain/{id}")]
         public IActionResult GetTrainById(string id)
         {
             try
             {
-
                 var res = _trainService.GetTrainById(id);
-
-                if (res == null)
-                {
-                    return NotFound("Train not found");
-                }
-
                 return Ok(res);
 
             }
@@ -70,18 +65,12 @@ namespace TicketingSystem.API.Controllers
             }
         }
 
+        //[Authorize]
         [HttpPut("UpdateTrain/{id}")]
         public IActionResult UpdateTrain(string id, [FromBody] Train updatedTrain)
         {
             try
-            {
-
-                var existingTrain = _trainService.GetTrainById(id);
-                if (existingTrain == null)
-                {
-                    return NotFound("Train not found");
-                }
-
+            {            
                 _trainService.UpdateTrain(id, updatedTrain);
                 return Ok(updatedTrain);
             }
@@ -92,21 +81,14 @@ namespace TicketingSystem.API.Controllers
 
         }
 
-
+        //[Authorize]
         [HttpDelete("DeleteTrain/{id}")]
         public IActionResult DeleteTrain(string id)
         {
             try
-            {
-
-                var Train = _trainService.GetTrainById(id);
-                if (Train == null)
-                {
-                    return NotFound("Train not found");
-                }
-
-                _trainService.DeleteTrain(id);
-                return Ok(Train);
+            {              
+                var res = _trainService.DeleteTrain(id);
+                return Ok(res);
             }
             catch (Exception ex)
             {

@@ -19,6 +19,7 @@ namespace TicketingSystem.API.Controllers
             _reservationService = reservationService;
         }
 
+        //[Authorize]
         [HttpPost("AddReservation")]
         public IActionResult AddReservation(Reservation reservation)
         {
@@ -32,6 +33,7 @@ namespace TicketingSystem.API.Controllers
                 return BadRequest($"Error: {ex.Message}");
             }
         }
+
         //[Authorize]
         [HttpGet("GetAllReservations")]
         public IActionResult GetAllReservations()
@@ -49,6 +51,7 @@ namespace TicketingSystem.API.Controllers
 
         }
 
+        //[Authorize]
         [HttpGet("GetReservation/{id}")]
         public IActionResult GetReservationById(string id)
         {
@@ -70,7 +73,7 @@ namespace TicketingSystem.API.Controllers
                 return BadRequest($"Error: {ex.Message}");
             }
         }
-
+        //[Authorize]
         [HttpGet("GetReservationByUser/{id}")]
         public IActionResult GetReservationsByUserId(string id)
         {
@@ -91,8 +94,9 @@ namespace TicketingSystem.API.Controllers
             {
                 return BadRequest($"Error: {ex.Message}");
             }
-        }        
+        }
 
+        //[Authorize]
         [HttpPut("UpdateReservation/{id}")]
         public IActionResult UpdateReservation(string id, [FromBody] Reservation updatedReservation)
         {
@@ -115,7 +119,7 @@ namespace TicketingSystem.API.Controllers
 
         }
 
-
+        //[Authorize]
         [HttpDelete("DeleteReservation/{id}")]
         public IActionResult DeleteReservation(string id)
         {

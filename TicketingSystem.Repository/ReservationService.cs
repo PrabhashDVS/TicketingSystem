@@ -145,11 +145,19 @@ namespace TicketingSystem.Repository
                 reservation = _reservationCollection.Find(s => s.Id == id).SingleOrDefault();
                 if (reservation != null)
                 {
-                    var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
-                    var update = Builders<Reservation>.Update.Set(s => s.Status, updatedReservation.Status);
+                    // calculate the date differnce in between reservation date current date
+                    TimeSpan difference = reservation.ReservationDate - DateTime.Today;
+                    int daysDifference = difference.Days;
 
-                    _reservationCollection.UpdateOne(filter, update);
-                    return new BaseResponseService().GetSuccessResponse(updatedReservation);
+                    if (daysDifference >= 5)
+                    {
+                        var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
+                        var update = Builders<Reservation>.Update.Set(s => s.Status, updatedReservation.Status);
+
+                        _reservationCollection.UpdateOne(filter, update);
+                        return new BaseResponseService().GetSuccessResponse(updatedReservation);
+                    }
+                    return new BaseResponseService().GetValidatationResponse("You Can Only Update Reservation at least 5 Days Before the Reservation!");
                 }
                 return new BaseResponseService().GetValidatationResponse("Reservation Not Found!");
 
@@ -169,9 +177,16 @@ namespace TicketingSystem.Repository
                 reservation = _reservationCollection.Find(s => s.Id == id).SingleOrDefault();
                 if (reservation != null)
                 {
-                    var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
-                    _reservationCollection.DeleteOne(filter);
-                    return new BaseResponseService().GetSuccessResponse("Reservation Deleted Successfully");
+                    // calculate the date differnce in between reservation date current date
+                    TimeSpan difference = reservation.ReservationDate - DateTime.Today;
+                    int daysDifference = difference.Days;
+                    if(daysDifference >= 5)
+                    {
+                        var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
+                        _reservationCollection.DeleteOne(filter);
+                        return new BaseResponseService().GetSuccessResponse("Reservation Canceling Successfully");
+                    }
+                    return new BaseResponseService().GetValidatationResponse("You Can Only Cancel Reservation at least 5 Days Before the Reservation!");
                 }
                 return new BaseResponseService().GetValidatationResponse("Reservation Not Found!");
             }

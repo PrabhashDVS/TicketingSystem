@@ -85,8 +85,8 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-                _reservationService.UpdateReservation(id, updatedReservation);
-                return Ok(updatedReservation);
+                var res = _reservationService.UpdateReservation(id, updatedReservation);
+                return Ok(res);
             }
             catch (Exception ex)
             {

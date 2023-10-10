@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TicketingSystem.Model
 {
     [BsonIgnoreExtraElements]
-    public class Reservation
+    public class Reservation 
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -21,9 +21,11 @@ namespace TicketingSystem.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; } = String.Empty;
         public string Status { get; set; }  = String.Empty;
-        public string From { get; set; } = String.Empty;
-        public string To { get; set; } = String.Empty;
+        public Station From { get; set; } = new Station();
+        public Station To { get; set; } = new Station();
         public double Price { get; set; } = 0;
+        public DateTime ReservationDate { get; set; } = DateTime.MinValue;
 
     }
+
 }

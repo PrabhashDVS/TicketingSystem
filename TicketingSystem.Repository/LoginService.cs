@@ -24,21 +24,21 @@ namespace TicketingSystem.Repository
                 User user = new User();
 
                 user = _userCollection.Find(s => s.NIC == nic).SingleOrDefault();
-
-                if (user.ActiveStatus == "Deactive")
+                
+                if (user == null)
                 {
-                    throw new Exception("User is not Active!");
-                }
-                else if (user == null)
-                {
-                    throw new Exception("NIC is incorrect!");
+                    throw new Exception("NIC is Incorrect!");
                 }
                 else if(!BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
-                    throw new Exception("Password is incorrect!");
+                    throw new Exception("Password is Incorrect!");
                 }
-                
-                    return user;
+                else if (user.ActiveStatus == "Deactive")
+                {
+                    throw new Exception("User is not Active!");
+                }
+
+                return user;
             }
             catch (Exception ex)
             {

@@ -45,7 +45,6 @@ namespace TicketingSystem.API.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest($"Error: {ex.Message}");
             }
 
@@ -57,16 +56,8 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
                 var res = _reservationService.GetReservationById(id);
-
-                if (res == null)
-                {
-                    return NotFound("Reservation not found");
-                }
-
                 return Ok(res);
-
             }
             catch (Exception ex)
             {
@@ -79,16 +70,8 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
                 var res = _reservationService.GetReservationsByUserId(id);
-
-                if (res == null)
-                {
-                    return NotFound("Reservation not found");
-                }
-
                 return Ok(res);
-
             }
             catch (Exception ex)
             {
@@ -102,13 +85,6 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
-                var existingReservation = _reservationService.GetReservationById(id);
-                if (existingReservation == null)
-                {
-                    return NotFound("Reservation not found");
-                }
-
                 _reservationService.UpdateReservation(id, updatedReservation);
                 return Ok(updatedReservation);
             }
@@ -125,15 +101,8 @@ namespace TicketingSystem.API.Controllers
         {
             try
             {
-
-                var Reservation = _reservationService.GetReservationById(id);
-                if (Reservation == null)
-                {
-                    return NotFound("Reservation not found");
-                }
-
-                _reservationService.DeleteReservation(id);
-                return Ok(Reservation);
+                var res = _reservationService.DeleteReservation(id);
+                return Ok(res);
             }
             catch (Exception ex)
             {

@@ -23,6 +23,7 @@ namespace TicketingSystem.Model
         public DateTime ArrivalDate { get; set; }
         public int NoOfSeats { get; set; } = 0;
         public string Fare { get; set; } = string.Empty;
+        public string ActiveStatus { get; set; } = string.Empty;
 
     }
         

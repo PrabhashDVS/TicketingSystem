@@ -25,6 +25,7 @@ namespace TicketingSystem.Model
         public Station To { get; set; } = new Station();
         public double Price { get; set; } = 0;
         public DateTime ReservationDate { get; set; } = DateTime.MinValue;
+        public int NoOfSeats { get; set; } = 0;
 
     }
 

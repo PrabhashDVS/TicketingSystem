@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using MongoDB.Driver;
 using System.Text;
 using TicketingSystem;
 using TicketingSystem.Model;
+using TicketingSystem.Model.ViewModels;
 using TicketingSystem.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<ReservationService>();
 builder.Services.AddScoped<TrainService>();
+
 var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
 var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettings>();
 
@@ -47,6 +50,14 @@ builder.Services.AddSingleton<JwtTokenService>(provider =>
     return new JwtTokenService(jwtSettings.ValidIssuer, jwtSettings.ValidAudience, jwtSettings.SecretKey, 12000);
 });
 
+// config Mapper
+var mapperConfiguration = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
+var mapper = new Mapper(mapperConfiguration);
+
+builder.Services.AddSingleton<IMapper>(mapper);
 
 var app = builder.Build();
 app.UseCors(builder => builder

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace TicketingSystem.Repository
     public class UserService
     {
         private readonly IMongoCollection<User> _userCollection;
+        private readonly IMapper _mapper;
 
-        public UserService(DatabaseSetting settings, IMongoClient mongoClient)
+        public UserService(DatabaseSetting settings, IMongoClient mongoClient, IMapper mapper)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _userCollection = database.GetCollection<User>(settings.UserCollectionName);
+            _mapper = mapper;
         }
 
         public BaseResponse InsertUser(User user)
@@ -56,8 +59,9 @@ namespace TicketingSystem.Repository
                 {
                     user.ActiveStatus = (user.ActiveStatus == "Active") ? "Deactive" : "Active";
                     _userCollection.ReplaceOne(s => s.Id == id, user);
+                    UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
 
-                    return new BaseResponseService().GetSuccessResponse(user);
+                    return new BaseResponseService().GetSuccessResponse(userMapVm);
                 }
 
                 return new BaseResponseService().GetValidatationResponse("User Not Found!");
@@ -77,7 +81,8 @@ namespace TicketingSystem.Repository
                 userList = _userCollection.Find(s => true).ToList();
                 if(userList != null)
                 {
-                    return new BaseResponseService().GetSuccessResponse(userList);
+                    List<UserMapVM> userMapList = _mapper.Map<List<UserMapVM>>(userList);
+                    return new BaseResponseService().GetSuccessResponse(userMapList);
                 }
                 return new BaseResponseService().GetValidatationResponse("Users Not Found!");
             }
@@ -91,12 +96,13 @@ namespace TicketingSystem.Repository
         public BaseResponse GetUserById(string id)
         {  
             try
-            {
+            {                
                 User user = new User();
                 user = _userCollection.Find(s => s.Id == id).SingleOrDefault();
+                UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
                 if (user != null)
                 {
-                    return new BaseResponseService().GetSuccessResponse(user);
+                    return new BaseResponseService().GetSuccessResponse(userMapVm);
                 }
                 return new BaseResponseService().GetValidatationResponse("User Not Found!");
             }

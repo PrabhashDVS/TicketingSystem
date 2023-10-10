@@ -1,4 +1,5 @@
-﻿    using MongoDB.Bson;
+﻿using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketingSystem.Model;
+using TicketingSystem.Model.ViewModels;
 
 namespace TicketingSystem.Repository
 {
@@ -14,14 +16,15 @@ namespace TicketingSystem.Repository
         private readonly IMongoCollection<Reservation> _reservationCollection;
         private readonly IMongoCollection<User> _userCollection;
         private readonly IMongoCollection<Train> _trainCollection;
+        private readonly IMapper _mapper;
 
-        public ReservationService(DatabaseSetting settings, IMongoClient mongoClient)
+        public ReservationService(DatabaseSetting settings, IMongoClient mongoClient, IMapper mapper)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _reservationCollection = database.GetCollection<Reservation>(settings.ReservationCollectionName);
             _userCollection = database.GetCollection<User>(settings.UserCollectionName);
             _trainCollection = database.GetCollection<Train>(settings.TrainCollectionName);
-
+            _mapper = mapper;
         }
 
         public BaseResponse InsertReservation(Reservation reservation)
@@ -39,8 +42,14 @@ namespace TicketingSystem.Repository
                 }
                 if(reservationListByUser.Count < 5)
                 {
-                    _reservationCollection.InsertOne(reservation);
-                    return new BaseResponseService().GetSuccessResponse(reservation);
+                    TimeSpan difference = reservation.ReservationDate - DateTime.Today;
+                    int days = difference.Days;
+                    if (days < 30)
+                    {
+                        _reservationCollection.InsertOne(reservation);
+                        return new BaseResponseService().GetSuccessResponse(reservation);
+                    }
+                    return new BaseResponseService().GetValidatationResponse("Reservation Date should be 30 days from the Booking Date!");
                 }
                 return new BaseResponseService().GetValidatationResponse("You Reached Maximum Reserverion Can Made!");
             }
@@ -64,8 +73,8 @@ namespace TicketingSystem.Repository
                     {
                         User user = _userCollection.Find(u => u.Id == reservation.UserId).SingleOrDefault();
                         Train train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-
-                        var resObject = new { reservation, user, train };
+                        UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
+                        var resObject = new { reservation, userMapVm, train };
                         reservationList.Add(resObject);
                     }
                     return new BaseResponseService().GetSuccessResponse(reservationList);
@@ -91,7 +100,8 @@ namespace TicketingSystem.Repository
                 {
                     user = _userCollection.Find(t => t.Id == reservation.UserId).SingleOrDefault();
                     train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-                    var resObject = new { reservation = reservation, user = user, train = train };
+                    UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
+                    var resObject = new { reservation = reservation, user = userMapVm, train = train };
                     return new BaseResponseService().GetSuccessResponse(resObject);
                 }
                 return new BaseResponseService().GetValidatationResponse("Reservation Not Found!");
@@ -118,8 +128,8 @@ namespace TicketingSystem.Repository
                         {
                             User user = _userCollection.Find(u => u.Id == reservation.UserId).SingleOrDefault();
                             Train train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-
-                            var resObject = new { reservation, user, train };
+                            UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
+                            var resObject = new { reservation, userMapVm, train };
                             reservationList.Add(resObject);
                         }
 

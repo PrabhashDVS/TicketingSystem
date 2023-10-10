@@ -28,10 +28,21 @@ namespace TicketingSystem.Repository
         {
             try
             {
-                Reservation resByUserId = new Reservation();
-                //resByUserId = _reservationCollection.Find(u => u.UserId == reservation.UserId).SingleOrDefault();
-                _reservationCollection.InsertOne(reservation);
-                return new BaseResponseService().GetSuccessResponse(reservation);
+                var reservationsList = _reservationCollection.Find( _ => true).ToList();
+                var reservationListByUser = new List<object>();
+                foreach (var res in reservationsList)
+                {
+                    if(res.ReservationDate > DateTime.Today)
+                    {
+                        reservationListByUser.Add(res);
+                    }
+                }
+                if(reservationListByUser.Count < 5)
+                {
+                    _reservationCollection.InsertOne(reservation);
+                    return new BaseResponseService().GetSuccessResponse(reservation);
+                }
+                return new BaseResponseService().GetValidatationResponse("You Reached Maximum Reserverion Can Made!");
             }
             catch (Exception ex)
             {

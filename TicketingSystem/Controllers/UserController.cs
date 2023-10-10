@@ -48,7 +48,7 @@ namespace TicketingSystem.API.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketingSystem.Model;
+using TicketingSystem.Model.ViewModels;
 using static System.Collections.Specialized.BitVector32;
 
 namespace TicketingSystem.Repository
@@ -13,11 +14,13 @@ namespace TicketingSystem.Repository
     public class TrainService
     {
         private readonly IMongoCollection<Train> _trainCollection;
+        private readonly IMongoCollection<Reservation> _reservationCollection;
 
         public TrainService(DatabaseSetting settings, IMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _trainCollection = database.GetCollection<Train>(settings.TrainCollectionName);
+            _reservationCollection = database.GetCollection<Reservation>(settings.ReservationCollectionName);
         }
 
         public BaseResponse InsertTrain(Train Train)
@@ -26,6 +29,29 @@ namespace TicketingSystem.Repository
             {                
                 _trainCollection.InsertOne(Train);
                 return new BaseResponseService().GetSuccessResponse(Train);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseService().GetErrorResponse(ex);
+            }
+
+        }
+
+        public BaseResponse ActiveTrain(string id)
+        {
+            try
+            {
+                Train train = new Train();
+                train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
+
+                if (train != null)
+                {
+                    train.ActiveStatus = "Active";
+                    _trainCollection.ReplaceOne(s => s.Id == id, train);
+
+                    return new BaseResponseService().GetSuccessResponse(train);
+                }
+                return new BaseResponseService().GetValidatationResponse("Train Not Found!");
             }
             catch (Exception ex)
             {
@@ -110,11 +136,20 @@ namespace TicketingSystem.Repository
         {
             try
             {
-
+                List <Reservation> reservationList = new List<Reservation>();
+                reservationList = _reservationCollection.Find(_ => true).ToList();
                 Train train = new Train();
                 train = _trainCollection.Find(s => s.Id == id).SingleOrDefault();
                 if (train != null)
                 {
+                    foreach(var reservation in reservationList)
+                    {
+                        var checkTrainId = reservation.TrainId;
+                        if(checkTrainId == train.Id)
+                        {
+                            return new BaseResponseService().GetValidatationResponse("Cannot Cancel Train Since Train has Active Reservation!");
+                        }
+                    }
                     var filter = Builders<Train>.Filter.Eq(s => s.Id, id);
                     _trainCollection.DeleteOne(filter);
                     return new BaseResponseService().GetSuccessResponse("The Train Deleted Successfully!");

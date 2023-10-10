@@ -32,6 +32,22 @@ namespace TicketingSystem.API.Controllers
                 return BadRequest($"Error: {ex.Message}");
             }
         }
+
+        //[Authorize]
+        [HttpGet("ActiveTrain/{id}")]
+        public IActionResult ActiveTrain(string id)
+        {
+            try
+            {
+                var res = _trainService.ActiveTrain(id);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
         //[Authorize]
         [HttpGet("GetAllTrains")]
         public IActionResult GetAllTrains()

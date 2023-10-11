@@ -29,8 +29,8 @@ namespace TicketingSystem
             {
             new Claim("role", role),
             new Claim("id", id),
-            // Add any additional claims as needed
-        };
+            new Claim(ClaimTypes.Role, role),
+            };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

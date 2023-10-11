@@ -29,6 +29,11 @@ builder.Services.AddScoped<TrainService>();
 var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
 var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettings>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -39,7 +44,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings.ValidIssuer, 
+            ValidIssuer = jwtSettings.ValidIssuer,
             ValidAudience = jwtSettings.ValidAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
         };
@@ -47,7 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddSingleton<JwtTokenService>(provider =>
 {
-    return new JwtTokenService(jwtSettings.ValidIssuer, jwtSettings.ValidAudience, jwtSettings.SecretKey, 12000);
+    return new JwtTokenService(jwtSettings.SecretKey, jwtSettings.ValidIssuer, jwtSettings.ValidAudience, 12000);
 });
 
 // config Mapper

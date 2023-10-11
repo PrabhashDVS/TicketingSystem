@@ -39,7 +39,7 @@ namespace TicketingSystem.Controllers
 
                 //var resObject = new { userData = userRes, tokenData = token };
 
-                return Ok(token);
+                return Ok(new { token });
             }
             catch (Exception ex)
             {

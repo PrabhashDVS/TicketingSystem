@@ -28,7 +28,7 @@ namespace TicketingSystem.Controllers
             try
             {
                 string nic = user.NIC;                
-                string password = user.Password;
+                string password = user.Password;    
                 
                 var userRes = _loginService.Login(nic, password);
 
@@ -36,8 +36,6 @@ namespace TicketingSystem.Controllers
                 string role = userRes.Role;
 
                 string token = _tokenService.GenerateToken(id, role);
-
-                //var resObject = new { userData = userRes, tokenData = token };
 
                 return Ok(new { token });
             }

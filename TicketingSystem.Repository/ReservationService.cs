@@ -73,8 +73,8 @@ namespace TicketingSystem.Repository
                     {
                         User user = _userCollection.Find(u => u.Id == reservation.UserId).SingleOrDefault();
                         Train train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-                        UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
-                        var resObject = new { reservation, userMapVm, train };
+                        UserMapVM userDetails = _mapper.Map<UserMapVM>(user);
+                        var resObject = new { reservation, userDetails, train };
                         reservationList.Add(resObject);
                     }
                     return new BaseResponseService().GetSuccessResponse(reservationList);
@@ -100,8 +100,8 @@ namespace TicketingSystem.Repository
                 {
                     user = _userCollection.Find(t => t.Id == reservation.UserId).SingleOrDefault();
                     train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-                    UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
-                    var resObject = new { reservation = reservation, user = userMapVm, train = train };
+                    UserMapVM userDetails = _mapper.Map<UserMapVM>(user);
+                    var resObject = new { reservation = reservation, user = userDetails, train = train };
                     return new BaseResponseService().GetSuccessResponse(resObject);
                 }
                 return new BaseResponseService().GetValidatationResponse("Reservation Not Found!");
@@ -128,8 +128,8 @@ namespace TicketingSystem.Repository
                         {
                             User user = _userCollection.Find(u => u.Id == reservation.UserId).SingleOrDefault();
                             Train train = _trainCollection.Find(t => t.Id == reservation.TrainId).SingleOrDefault();
-                            UserMapVM userMapVm = _mapper.Map<UserMapVM>(user);
-                            var resObject = new { reservation, userMapVm, train };
+                            UserMapVM userDetails = _mapper.Map<UserMapVM>(user);
+                            var resObject = new { reservation, userDetails, train };
                             reservationList.Add(resObject);
                         }
 

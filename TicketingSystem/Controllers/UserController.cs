@@ -52,7 +52,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the user to activate or deactivate.</param>
         /// <returns>Returns an HTTP response with the activation status if successful,
         /// or a bad request response with an error message if an exception occurs or the user is not found.</returns>
-        //[Authorize]
+        [Authorize (Policy = "backOfficersOnly")]
         [HttpGet("ActiveDeactiveUser/{id}")]
         public IActionResult ActiveDeactiveUser(string id)
         {
@@ -72,7 +72,7 @@ namespace TicketingSystem.API.Controllers
         /// </summary>
         /// <returns>Returns an HTTP response with a list of all users if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
@@ -95,7 +95,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the user to retrieve.</param>
         /// <returns>Returns an HTTP response with the user information if found,
         /// or a bad request response with an error message if an exception occurs or the user is not found.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet("GetUser/{id}")]
         public IActionResult GetUserById(string id)
         {
@@ -117,7 +117,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="updatedUser">A UserVM (User View Model) object containing the updated user details.</param>
         /// <returns>Returns an HTTP response with the updated user information if successful,
         /// or a bad request response with an error message if an exception occurs or the user is not found.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpPut("UpdateUser/{id}")]
         public IActionResult UpdateUser(string id, [FromBody] UserVM updatedUser)
         {
@@ -139,7 +139,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the user to be deleted.</param>
         /// <returns>Returns an HTTP response with a success message if the deletion is successful, 
         /// or a bad request response with an error message if an exception occurs or the user is not found.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpDelete("DeleteUser/{id}")]
         public IActionResult DeleteUser(string id)
         {

@@ -27,13 +27,14 @@ namespace TicketingSystem.API.Controllers
             _trainService = trainService;
         }
 
-        //[Authorize]
+       
         /// <summary>
         /// Handles the HTTP POST request to add a new train.
         /// </summary>
         /// <param name="train">A Train object containing details of the train to be added.</param>
         /// <returns>Returns an HTTP response with the added train information if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpPost("AddTrain")]
         public IActionResult AddTrain(Train train)
         {
@@ -54,7 +55,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the train to be activated.</param>
         /// <returns>Returns an HTTP response with the activation status if successful, 
         /// or a bad request response with an error message if an exception occurs or the train is not found.</returns>
-        //[Authorize]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpGet("ActiveTrain/{id}")]
         public IActionResult ActiveTrain(string id)
         {
@@ -74,7 +75,7 @@ namespace TicketingSystem.API.Controllers
         /// </summary>
         /// <returns>Returns an HTTP response with a list of all trains if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //[Authorize]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpGet("GetAllTrains")]
         public IActionResult GetAllTrains()
         {
@@ -97,7 +98,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the train to retrieve.</param>
         /// <returns>Returns an HTTP response with the train information if found, 
         /// or a bad request response with an error message if an exception occurs or the train is not found.</returns>
-        //[Authorize]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpGet("GetTrain/{id}")]
         public IActionResult GetTrainById(string id)
         {
@@ -120,7 +121,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="updatedTrain">A Train object containing the updated train details.</param>
         /// <returns>Returns an HTTP response with the updated train information if successful,
         /// or a bad request response with an error message if an exception occurs or the train is not found.</returns>
-        //[Authorize]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpPut("UpdateTrain/{id}")]
         public IActionResult UpdateTrain(string id, [FromBody] Train updatedTrain)
         {
@@ -142,7 +143,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the train to be deleted.</param>
         /// <returns>Returns an HTTP response with a success message if the deletion is successful, 
         /// or a bad request response with an error message if an exception occurs or the train is not found.</returns>
-        //[Authorize]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpDelete("DeleteTrain/{id}")]
         public IActionResult DeleteTrain(string id)
         {

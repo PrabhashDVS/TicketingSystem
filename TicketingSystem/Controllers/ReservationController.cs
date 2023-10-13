@@ -34,7 +34,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="reservation">A Reservation object containing details of the reservation to be added.</param>
         /// <returns>Returns an HTTP response with the added reservation information if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpPost("AddReservation")]
         public IActionResult AddReservation(Reservation reservation)
         {
@@ -54,7 +54,7 @@ namespace TicketingSystem.API.Controllers
         /// </summary>
         /// <returns>Returns an HTTP response with a list of all reservations if successful, 
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet("GetAllReservations")]
         public IActionResult GetAllReservations()
         {
@@ -76,7 +76,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the reservation to retrieve.</param>
         /// <returns>Returns an HTTP response with the reservation information if found, 
         /// or a bad request response with an error message if an exception occurs or the reservation is not found.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet("GetReservation/{id}")]
         public IActionResult GetReservationById(string id)
         {
@@ -96,7 +96,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the user for whom reservations are to be retrieved.</param>
         /// <returns>Returns an HTTP response with a list of reservations associated with the user if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //[Authorize]
+        [Authorize]
         [HttpGet("GetReservationByUser/{id}")]
         public IActionResult GetReservationsByUserId(string id)
         {
@@ -111,7 +111,7 @@ namespace TicketingSystem.API.Controllers
             }
         }
 
-        //[Authorize]
+
         /// <summary>
         /// Handles the HTTP PUT request to update a reservation by its unique identifier.
         /// </summary>
@@ -119,6 +119,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="updatedReservation">A Reservation object containing the updated reservation details.</param>
         /// <returns>Returns an HTTP response with the updated reservation information if successful,
         /// or a bad request response with an error message if an exception occurs or the reservation is not found.</returns>
+        [Authorize]
         [HttpPut("UpdateReservation/{id}")]
         public IActionResult UpdateReservation(string id, [FromBody] Reservation updatedReservation)
         {
@@ -134,13 +135,14 @@ namespace TicketingSystem.API.Controllers
 
         }
 
-        //[Authorize]
+
         /// <summary>
         /// Handles the HTTP DELETE request to delete a reservation by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the reservation to be deleted.</param>
         /// <returns>Returns an HTTP response with a success message if the deletion is successful,
         /// or a bad request response with an error message if an exception occurs or the reservation is not found.</returns>
+        [Authorize]
         [HttpDelete("DeleteReservation/{id}")]
         public IActionResult DeleteReservation(string id)
         {

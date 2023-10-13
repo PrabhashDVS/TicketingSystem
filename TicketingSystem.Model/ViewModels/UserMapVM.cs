@@ -1,4 +1,15 @@
-﻿using MongoDB.Bson;
+﻿/*
+   File: UserMapVM.cs
+   Description: This file contains the implementation of the UserMapVM class, 
+   which represents a view model for user data with various properties, including
+   ID, NIC,first name, last name, email, contact number, date of birth, address, gender, role, and active status.
+   this is use for get response without sensetive data.
+   Author: Prabhash D.V.S.
+   Creation Date: 2023/10/03
+   Last Modified Date: 2023/10/10  
+*/
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

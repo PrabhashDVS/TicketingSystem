@@ -1,4 +1,16 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿/*
+   File: User.cs
+   Description: This file contains the implementation of the User class, which represents a user entity with
+   various properties, including ID, NIC, first name, last name, email, contact number, date of birth, address,
+   gender, password, role, and active status.
+   Author: Prabhash D.V.S.
+   Creation Date: 2023/10/03
+   Last Modified Date: 2023/10/08  
+*/
+
+
+
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;

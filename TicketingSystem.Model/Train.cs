@@ -1,4 +1,15 @@
-﻿using MongoDB.Bson;
+﻿/*
+   File: Train.cs
+   Description: This file contains the implementation of the Train class, which represents a train entity
+   with various properties, including ID, number, name, departure information, stations, arrival information,
+   seat count, fare, and active status. Additionally, the file defines the Station class used within the Train class and
+   required other classes.
+   Author: Weerasiri R. T. K. , Weerasinghe T. K. (add active status)
+   Creation Date: 2023/10/04
+   Last Modified Date: 2023/10/11
+*/
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

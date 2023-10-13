@@ -1,4 +1,13 @@
-﻿using MongoDB.Bson;
+﻿/*
+   File: TrainService.cs
+   Description: This file contains the implementation of the TrainService class, which provides methods for managing trains,
+   including insertion, activation, retrieval, update, and deletion of train records. It interacts with 
+   MongoDB collections and handles interactions with reservations to prevent deletion of trains with active reservations.
+   Author: Weerasiri R. T. K. , Weerasinghe T. K.(ActiveTrain Implementation)
+   Creation Date: 2023/10/04
+   Last Modified Date: 2023/10/11
+*/
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -23,6 +32,14 @@ namespace TicketingSystem.Repository
             _reservationCollection = database.GetCollection<Reservation>(settings.ReservationCollectionName);
         }
 
+        /// <summary>
+        /// Insert a new train into the system.
+        /// </summary>
+        /// <param name="Train">The train object to be inserted.</param>
+        /// <returns>
+        /// Returns a success response with the inserted train if the insertion is successful,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse InsertTrain(Train Train)
         {
             try
@@ -37,6 +54,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Activate a train by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the train to activate.</param>
+        /// <returns>
+        /// Returns a success response with the activated train if activation is successful,
+        /// a validation response with an error message if the train is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse ActiveTrain(string id)
         {
             try
@@ -60,6 +86,14 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Retrieve a list of all trains in the system.
+        /// </summary>
+        /// <returns>
+        /// Returns a success response with the list of trains if trains are found,
+        /// or a validation response with an error message if no trains are found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetAllTrains()
         {
             try
@@ -79,6 +113,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Retrieve a train by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the train to retrieve.</param>
+        /// <returns>
+        /// Returns a success response with the train if found,
+        /// a validation response with an error message if the train is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetTrainById(string id)
         {
             try
@@ -99,6 +142,16 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Update the details of a train by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the train to update.</param>
+        /// <param name="updatedTrain">The updated train details, including properties such as number, name, departure, etc.</param>
+        /// <returns>
+        /// Returns a success response with the updated train if the update is successful,
+        /// a validation response with an error message if the train is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse UpdateTrain(string id, Train updatedTrain)
         {
             try
@@ -132,6 +185,16 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Delete a train by its unique identifier, subject to specific constraints.
+        /// </summary>
+        /// <param name="id">The unique identifier of the train to delete.</param>
+        /// <returns>
+        /// Returns a success response with a message if the deletion is successful,
+        /// a validation response with an error message if the train cannot be deleted due to active reservations,
+        /// a validation response with an error message if the train is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse DeleteTrain(string id)
         {
             try

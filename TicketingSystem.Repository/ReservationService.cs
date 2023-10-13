@@ -1,4 +1,13 @@
-﻿using AutoMapper;
+﻿/*
+   File: ReservationService.cs
+   Description: This file contains the implementation of the ReservationService class, 
+   which provides various methods for handling reservations, including insertion, retrieval, update, and deletion.
+   It interacts with MongoDB collections and uses a Mapper for mapping data objects.
+   Author: Piyumantha H. P. A. H.
+   Creation Date: 2023/10/04
+   Last Modified Date: 2023/10/10
+*/
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -27,6 +36,15 @@ namespace TicketingSystem.Repository
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Insert a reservation into the system after applying certain validation rules.
+        /// </summary>
+        /// <param name="reservation">The reservation to be inserted.</param>
+        /// <returns>
+        /// Returns a success response with the inserted reservation if successful, or
+        /// a validation response with an error message if validation conditions are not met,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse InsertReservation(Reservation reservation)
         {
             try
@@ -59,7 +77,15 @@ namespace TicketingSystem.Repository
             }
 
         }
-    
+
+        /// <summary>
+        /// Retrieve a list of all reservations along with associated user and train details.
+        /// </summary>
+        /// <returns>
+        /// Returns a success response with the list of reservations, including associated user and train information, if reservations are found,
+        /// or a validation response with an error message if no reservations are found, or
+        /// an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetAllReservations()
         {
             try
@@ -87,7 +113,15 @@ namespace TicketingSystem.Repository
             }
         }
 
-
+        /// <summary>
+        /// Retrieve a reservation by its unique identifier along with associated user and train details.
+        /// </summary>
+        /// <param name="id">The unique identifier of the reservation to retrieve.</param>
+        /// <returns>
+        /// Returns a success response with the reservation, including associated user and train information, if found,
+        /// or a validation response with an error message if the reservation is not found, or
+        /// an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetReservationById(string id)
         {
             try
@@ -113,6 +147,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Retrieve a list of reservations associated with a specific user by their unique identifier, along with associated user and train details.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user for whom reservations are to be retrieved.</param>
+        /// <returns>
+        /// Returns a success response with a list of reservations, including associated user and train information, if reservations are found,
+        /// or a validation response with an error message if the user is not found or if the user has no reservations,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetReservationsByUserId(string userId)
         {
             try
@@ -146,7 +189,17 @@ namespace TicketingSystem.Repository
             }
         }
 
-
+        /// <summary>
+        /// Update the status of a reservation by its unique identifier, subject to specific constraints.
+        /// </summary>
+        /// <param name="id">The unique identifier of the reservation to update.</param>
+        /// <param name="updatedReservation">The updated reservation details, including the new status.</param>
+        /// <returns>
+        /// Returns a success response with the updated reservation if the update is successful,
+        /// a validation response with an error message if the reservation cannot be updated due to time constraints,
+        /// or a validation response with an error message if the reservation is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse UpdateReservation(string id, Reservation updatedReservation)
         {
             try
@@ -179,6 +232,16 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Delete a reservation by its unique identifier, subject to specific constraints.
+        /// </summary>
+        /// <param name="id">The unique identifier of the reservation to delete.</param>
+        /// <returns>
+        /// Returns a success response with a message if the deletion is successful,
+        /// a validation response with an error message if the reservation cannot be deleted due to time constraints,
+        /// or a validation response with an error message if the reservation is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse DeleteReservation(string id)
         {
             try

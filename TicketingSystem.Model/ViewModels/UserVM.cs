@@ -1,4 +1,14 @@
-﻿using MongoDB.Bson;
+﻿/*
+   File: UserVM.cs
+   Description: This file contains the implementation of the UserVM class, 
+   which represents a simplified view model for user data with various properties, including 
+   ID, first name, last name, email, contact number, date of birth, address, gender, role, and active status.
+   Author: Prabhash D.V.S.
+   Creation Date: 2023/10/03
+   Last Modified Date: 2023/10/10  
+*/
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

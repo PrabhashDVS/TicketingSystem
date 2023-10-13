@@ -1,4 +1,14 @@
-﻿using AutoMapper;
+﻿/*
+   File: UserService.cs
+   Description: This file contains the implementation of the UserService class, which provides methods for managing
+   user records, including insertion, activation/deactivation, retrieval, update, and deletion of user accounts.
+   It includes password hashing for security and uses AutoMapper for data mapping.
+   Author: Prabhash D.V.S.
+   Creation Date: 2023/10/03
+   Last Modified Date: 2023/10/08  
+*/
+
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -23,6 +33,15 @@ namespace TicketingSystem.Repository
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Insert a new user into the system, subject to constraints.
+        /// </summary>
+        /// <param name="user">The user object to be inserted.</param>
+        /// <returns>
+        /// Returns a success response with a message if the insertion is successful,
+        /// a validation response with an error message if the user already exists,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse InsertUser(User user)
         {
             try
@@ -48,6 +67,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Activate or deactivate a user by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the user to activate or deactivate.</param>
+        /// <returns>
+        /// Returns a success response with the user's updated status if activation or deactivation is successful,
+        /// a validation response with an error message if the user is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse ActiveDeactiveUser(string id)
         {
             try
@@ -73,6 +101,14 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Retrieve a list of all users in the system.
+        /// </summary>
+        /// <returns>
+        /// Returns a success response with the list of users if users are found,
+        /// or a validation response with an error message if no users are found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetAllUsers()
         {
             try
@@ -93,6 +129,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Retrieve a user by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the user to retrieve.</param>
+        /// <returns>
+        /// Returns a success response with the user details if the user is found,
+        /// a validation response with an error message if the user is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse GetUserById(string id)
         {  
             try
@@ -113,6 +158,16 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Update a user's details by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the user to update.</param>
+        /// <param name="updatedUser">The updated user details.</param>
+        /// <returns>
+        /// Returns a success response with the updated user details if the update is successful,
+        /// a validation response with an error message if the user is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse UpdateUser(string id, UserVM updatedUser)
         {
             try
@@ -143,6 +198,15 @@ namespace TicketingSystem.Repository
 
         }
 
+        /// <summary>
+        /// Delete a user by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the user to delete.</param>
+        /// <returns>
+        /// Returns a success response with a message if the deletion is successful,
+        /// a validation response with an error message if the user is not found,
+        /// or an error response with details of any exception that occurs during the process.
+        /// </returns>
         public BaseResponse DeleteUser(string id)
         {
             try

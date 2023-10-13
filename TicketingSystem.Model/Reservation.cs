@@ -1,4 +1,14 @@
-﻿using MongoDB.Bson;
+﻿/*
+   File: Reservation.cs
+   Description: This file contains the implementation of the Reservation class, 
+   which represents a reservation entity with various properties, including ID, train and user IDs, status, 
+   stations, price, reservation date, and the number of reserved seats.
+   Author: Piyumantha H. P. A. H.
+   Creation Date: 2023/10/04
+   Last Modified Date: 2023/10/10
+*/
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

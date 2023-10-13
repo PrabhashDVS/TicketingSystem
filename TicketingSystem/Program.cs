@@ -29,9 +29,10 @@ builder.Services.AddScoped<TrainService>();
 var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
 var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettings>();
 
+// add authorization for roles 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("backOfficersOnly", policy => policy.RequireRole("backOfficer"));
 });
 
 

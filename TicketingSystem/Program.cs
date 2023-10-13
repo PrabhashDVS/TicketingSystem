@@ -1,3 +1,12 @@
+/*
+   File: Program.cs
+   Description: This file contains the configuration of the ASP.NET Core application, including service registration,
+   CORS settings, authentication, and request pipeline setup.
+   Author: Prabhash D.V.S. , Piyumantha H. P. A. H. , Weerasinghe T. K. , Weerasiri R. T. K.
+   Creation Date: 2023/10/02
+   Last Modified Date: 2023/10/12
+*/
+
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

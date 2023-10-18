@@ -98,7 +98,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="id">The unique identifier of the train to retrieve.</param>
         /// <returns>Returns an HTTP response with the train information if found, 
         /// or a bad request response with an error message if an exception occurs or the train is not found.</returns>
-        [Authorize(Policy = "backOfficersOnly")]
+        [Authorize]
         [HttpGet("GetTrain/{id}")]
         public IActionResult GetTrainById(string id)
         {

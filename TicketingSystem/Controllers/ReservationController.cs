@@ -34,7 +34,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="reservation">A Reservation object containing details of the reservation to be added.</param>
         /// <returns>Returns an HTTP response with the added reservation information if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        [Authorize]
+        //[Authorize]
         [HttpPost("AddReservation")]
         public IActionResult AddReservation(Reservation reservation)
         {

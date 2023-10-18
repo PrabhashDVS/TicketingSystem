@@ -67,7 +67,7 @@ namespace TicketingSystem.Repository
                     {
                         //update noOfAvalable Seats in the train
                         Train train = _trainCollection.Find(s => s.Id == reservation.TrainId).SingleOrDefault();
-                        if(train.NoOfSeats > reservation.NoOfReservedSeats && reservation.NoOfReservedSeats > train.NoOfAvailableSeats)
+                        if(train.NoOfSeats > reservation.NoOfReservedSeats && train.NoOfAvailableSeats > reservation.NoOfReservedSeats)
                         {
                             train.NoOfAvailableSeats = train.NoOfAvailableSeats - reservation.NoOfReservedSeats;
                             _trainCollection.ReplaceOne(s => s.Id == reservation.TrainId, train);
@@ -235,7 +235,7 @@ namespace TicketingSystem.Repository
 
                         //update noOfAvalable Seats in the train
                         Train train = _trainCollection.Find(s => s.Id == reservation.TrainId).SingleOrDefault();
-                        if (train.NoOfSeats > reservation.NoOfReservedSeats && reservation.NoOfReservedSeats > train.NoOfAvailableSeats)
+                        if (train.NoOfSeats > reservation.NoOfReservedSeats && train.NoOfAvailableSeats > reservation.NoOfReservedSeats)
                         {
                             train.NoOfAvailableSeats = train.NoOfAvailableSeats - reservation.NoOfReservedSeats;
                             _trainCollection.ReplaceOne(s => s.Id == reservation.TrainId, train);

@@ -8,6 +8,7 @@
    Last Modified Date: 2023/10/10
 */
 using AutoMapper;
+using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -64,8 +65,16 @@ namespace TicketingSystem.Repository
                     int days = difference.Days;
                     if (days < 30)
                     {
-                        _reservationCollection.InsertOne(reservation);
-                        return new BaseResponseService().GetSuccessResponse(reservation);
+                        //update noOfAvalable Seats in the train
+                        Train train = _trainCollection.Find(s => s.Id == reservation.TrainId).SingleOrDefault();
+                        if(train.NoOfSeats > reservation.NoOfReservedSeats && reservation.NoOfReservedSeats > train.NoOfAvalableSeats)
+                        {
+                            train.NoOfAvalableSeats = train.NoOfAvalableSeats - reservation.NoOfReservedSeats;
+                            _trainCollection.ReplaceOne(s => s.Id == reservation.TrainId, train);
+                            _reservationCollection.InsertOne(reservation);
+                            return new BaseResponseService().GetSuccessResponse(reservation);
+                        }
+                        return new BaseResponseService().GetValidatationResponse("No of Avalable Seats are " + train.NoOfAvalableSeats);
                     }
                     return new BaseResponseService().GetValidatationResponse("Reservation Date should be 30 days from the Booking Date!");
                 }
@@ -215,10 +224,26 @@ namespace TicketingSystem.Repository
                     if (daysDifference >= 5)
                     {
                         var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
-                        var update = Builders<Reservation>.Update.Set(s => s.Status, updatedReservation.Status);
+                        var update = Builders<Reservation>.Update
+                            .Set(s => s.TrainId, updatedReservation.TrainId)
+                            .Set(s => s.Status, updatedReservation.Status)
+                            .Set(s => s.From, updatedReservation.From)
+                            .Set(s => s.To, updatedReservation.To)
+                            .Set(s => s.Price, updatedReservation.Price)
+                            .Set(s => s.ReservationDate, updatedReservation.ReservationDate)
+                            .Set(s => s.NoOfReservedSeats, updatedReservation.NoOfReservedSeats);
 
-                        _reservationCollection.UpdateOne(filter, update);
-                        return new BaseResponseService().GetSuccessResponse(updatedReservation);
+                        //update noOfAvalable Seats in the train
+                        Train train = _trainCollection.Find(s => s.Id == reservation.TrainId).SingleOrDefault();
+                        if (train.NoOfSeats > reservation.NoOfReservedSeats && reservation.NoOfReservedSeats > train.NoOfAvalableSeats)
+                        {
+                            train.NoOfAvalableSeats = train.NoOfAvalableSeats - reservation.NoOfReservedSeats;
+                            _trainCollection.ReplaceOne(s => s.Id == reservation.TrainId, train);
+                            _reservationCollection.UpdateOne(filter, update);
+                            return new BaseResponseService().GetSuccessResponse(updatedReservation);
+                        }
+                        return new BaseResponseService().GetValidatationResponse("No of Avalable Seats are " + train.NoOfAvalableSeats);
+                        
                     }
                     return new BaseResponseService().GetValidatationResponse("You Can Only Update Reservation at least 5 Days Before the Reservation!");
                 }
@@ -255,6 +280,11 @@ namespace TicketingSystem.Repository
                     int daysDifference = difference.Days;
                     if(daysDifference >= 5)
                     {
+
+                        //update noOfAvalable Seats in the train
+                        Train train = _trainCollection.Find(s => s.Id == reservation.TrainId).SingleOrDefault();                       
+                        train.NoOfAvalableSeats = train.NoOfAvalableSeats + reservation.NoOfReservedSeats;
+                        _trainCollection.ReplaceOne(s => s.Id == reservation.TrainId, train);                                       
                         var filter = Builders<Reservation>.Filter.Eq(s => s.Id, id);
                         _reservationCollection.DeleteOne(filter);
                         return new BaseResponseService().GetSuccessResponse("Reservation Canceling Successfully");

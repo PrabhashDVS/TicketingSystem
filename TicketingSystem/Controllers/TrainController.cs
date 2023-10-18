@@ -34,7 +34,7 @@ namespace TicketingSystem.API.Controllers
         /// <param name="train">A Train object containing details of the train to be added.</param>
         /// <returns>Returns an HTTP response with the added train information if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        //[Authorize(Policy = "backOfficersOnly")]
+        [Authorize(Policy = "backOfficersOnly")]
         [HttpPost("AddTrain")]
         public IActionResult AddTrain(Train train)
         {
@@ -75,7 +75,7 @@ namespace TicketingSystem.API.Controllers
         /// </summary>
         /// <returns>Returns an HTTP response with a list of all trains if successful,
         /// or a bad request response with an error message if an exception occurs.</returns>
-        [Authorize(Policy = "backOfficersOnly")]
+        [Authorize]
         [HttpGet("GetAllTrains")]
         public IActionResult GetAllTrains()
         {

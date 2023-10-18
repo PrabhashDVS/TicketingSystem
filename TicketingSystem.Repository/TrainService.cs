@@ -169,8 +169,8 @@ namespace TicketingSystem.Repository
                         .Set(s => s.Stations, updatedTrain.Stations)
                         .Set(s => s.Arrival, updatedTrain.Arrival)
                         .Set(s => s.ArrivalDate, updatedTrain.ArrivalDate)
-                        .Set(s => s.NoOfSeats, updatedTrain.NoOfSeats)
-                        .Set(s => s.Fare, updatedTrain.Fare);
+                        .Set(s => s.NoOfSeats, updatedTrain.NoOfSeats)                        
+                        .Set(s => s.Fare, updatedTrain.Fare);                        
 
                     _trainCollection.UpdateOne(filter, update);
                     return new BaseResponseService().GetSuccessResponse(updatedTrain);
